@@ -1,4 +1,4 @@
-## To run the script use the command 'ENVARNAME=ENVARVAL gdb *EXECUTABLENAME* -x ptest3.py' with both the executable and script in the same file path##
+## To run the script use the command 'ENVARNAME=ENVARVAL gdb *EXECUTABLENAME* -x ptestall.py' with both the executable and script in the same file path##
 
 ## If using the AUTO=True option the script getLeakRemoteBruteForce.py must be in the same directory as the script
 print("""
