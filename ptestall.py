@@ -253,7 +253,7 @@ elif r2libc:
 	# Write the function offsets and eip offset to file r2libcOffsets in json format
 	import json
 	print("")
-	f = open("r2libcOffsets.txt","w")
+	f = open("r2libcOffsets.json","w")
 	offsets = {"buffSize":offset,"putsPLT":putsPLT,"getsPLT":getsPLT,"mainAddr":mainAddr,"putsGot":putsGOT,"getsGot":getsGOT}
 	f.write(json.dumps(offsets)+"\n")
 	f.close()
