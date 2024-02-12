@@ -18,7 +18,7 @@ To set the values for the program, you can use the following environment variabl
 
 import os,sys,re
 
-# String to boolean converter is a modified version of: https://stackoverflow.com/a/43357954
+# String to boolean converter is a modified version of: https://stackoverflow.com/a/43357954 (Maxim & dennlinger, 2021)
 def str2bool(v, argname):
     if isinstance(v, bool):
         return v

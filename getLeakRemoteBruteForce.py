@@ -1,4 +1,3 @@
-#Adapted from https://ir0nstone.gitbook.io/notes/types/stack/aslr/ret2plt-aslr-bypass#final-exploit
 import requests
 import json
 from pwn import *
