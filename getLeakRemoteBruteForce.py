@@ -346,7 +346,7 @@ def getPercXOff(libcJson):
     filebytes = response.content
     # Find and return the offset in the binary of '%x'
     offset = filebytes.find(b"%x\x00")
-    log.success("Found %x in libc: "+hex(offset))
+    log.success("%x offset in "+libcJson['id']+": "+hex(offset))
     return offset
 
 # String to boolean converter is a modified version of: https://stackoverflow.com/a/43357954 (Maxim & dennlinger, 2021)
