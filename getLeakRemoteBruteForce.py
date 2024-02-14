@@ -32,7 +32,7 @@ def handleReverseShell():
     # Check if shell was sucessfully executed
     noEOF = True
     try:
-        proc.sendline(b"ls"+b" 2>&1")
+        proc.sendline(b"whoami"+b" 2>&1")
         print(proc.recv(timeout = 0.1).decode('utf-8'))
     except EOFError:
         noEOF = False
