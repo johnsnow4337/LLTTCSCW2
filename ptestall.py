@@ -299,7 +299,7 @@ elif r2libc:
 				gl.log.failure("Recieved premature EOF")
 				gl.proc.close()
 	else:
-		print("\nOffsets written to file r2libcOffsets.txt")
+		print("\nOffsets written to file r2libcOffsets.json")
 		print("Puts leak payload written to file leakPuts.txt\n")
 	quit()
 print(ip)
